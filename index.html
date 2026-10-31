@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=3d6bc7ac-ffc3-43ac-b18e-61719753c60f
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATELIER · Escribe historias y desarrolla a tus personajes</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--cafe:#9C7A54;--rosa:#F4DCDF;--crema:#F4F1EC;--ambar:#D9A05B;--tinta:#3d2e20;--suave:#6f5a43;--blanco:#fffdfa;--serif:'Lora',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--hero:#FAEFF0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--crema);color:var(--tinta);line-height:1.65}
+h1,h2,h3{font-family:var(--serif);line-height:1.2}
+:focus-visible{outline:3px solid var(--ambar);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+section{padding:64px 0}
+.titulo{font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:10px}
+.sub{color:var(--suave);max-width:62ch;margin-bottom:32px}
+.btn{display:inline-block;border:0;cursor:pointer;font:700 .95rem var(--sans);background:var(--cafe);color:var(--blanco);padding:12px 24px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s}
+.btn:hover{background:var(--tinta)}.btn:active{transform:scale(.97)}
+.btn.claro{background:var(--ambar);color:var(--tinta)}.btn.claro:hover{background:#c78f48}
+.btn.mini{padding:7px 14px;font-size:.85rem}
+header{position:sticky;top:0;z-index:20;background:var(--crema);border-bottom:1px solid rgba(156,122,84,.25)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.logo{font:700 1.35rem var(--serif);letter-spacing:.12em;text-decoration:none;color:var(--cafe)}
+nav{display:flex;align-items:center;gap:20px}
+nav a:not(.btn){text-decoration:none;font-weight:500;color:var(--suave)}
+nav a:not(.btn):hover{color:var(--tinta)}
+.hero{padding:64px 0 76px;background:var(--hero)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+.hero h1{font-size:clamp(2.3rem,5.5vw,3.7rem);margin-bottom:16px}
+.hero p{font-size:1.15rem;color:var(--suave);max-width:46ch;margin-bottom:26px}
+.collage{position:relative;height:330px}
+.collage img{position:absolute;width:150px;height:190px;object-fit:cover;border-radius:80px 80px 18px 18px;border:5px solid var(--blanco);box-shadow:0 14px 34px rgba(61,46,32,.18)}
+.collage img:nth-child(1){left:6%;top:50px;transform:rotate(-6deg)}
+.collage img:nth-child(2){left:34%;top:0;transform:rotate(3deg);z-index:2}
+.collage img:nth-child(3){right:2%;top:80px;transform:rotate(7deg)}
+.globo{position:absolute;left:18%;bottom:0;z-index:3;background:var(--blanco);padding:12px 16px;border-radius:18px 18px 18px 4px;max-width:250px;font:italic 500 1rem var(--serif);box-shadow:0 10px 26px rgba(61,46,32,.14)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--blanco);border-radius:20px;padding:24px;border-top:6px solid var(--ambar)}
+.card:nth-child(even){border-color:var(--cafe)}.card:nth-child(3n){border-color:#e3b5bb}
+.card h3{margin:8px 0 6px;font-size:1.15rem}.card p{color:var(--suave);font-size:.97rem}
+.ic{font-size:1.8rem}
+.quienes{background:var(--blanco)}
+.quienes .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.quienes blockquote{font:italic 500 1.5rem var(--serif);color:var(--cafe);border-left:5px solid var(--ambar);padding-left:20px}
+.panel{background:var(--blanco);border-radius:24px;padding:22px;box-shadow:0 12px 34px rgba(61,46,32,.08)}
+.grid2{display:grid;grid-template-columns:240px 1fr;gap:22px}
+.lista{display:flex;flex-direction:column;gap:6px}
+.item{display:flex;gap:6px}
+.item button.sel{flex:1;text-align:left;border:2px solid transparent;background:var(--crema);border-radius:12px;padding:9px 12px;font:600 .93rem var(--sans);color:var(--tinta);cursor:pointer}
+.item button.sel[aria-current="true"]{border-color:var(--ambar);background:var(--rosa)}
+.item .x{border:0;background:none;cursor:pointer;color:var(--suave);font-size:1.1rem}
+label{display:block;font-weight:700;margin-bottom:4px;font-size:.9rem}
+input,select,textarea{width:100%;font:1rem var(--sans);color:var(--tinta);background:var(--crema);border:2px solid #e2d6c6;border-radius:12px;padding:10px 13px}
+input:focus,select:focus,textarea:focus{border-color:var(--ambar);outline:none}
+textarea{min-height:90px;resize:vertical}
+#texto{min-height:300px;font-family:var(--serif);font-size:1.08rem;line-height:1.8;background:#fffaf2}
+.meta{display:flex;justify-content:space-between;color:var(--suave);font-size:.85rem;margin-top:6px}
+.campo{margin-bottom:12px}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.foto{width:150px;height:190px;border-radius:80px 80px 18px 18px;margin:0 auto 10px;overflow:hidden;display:grid;place-items:center;font:700 3.6rem var(--serif);color:var(--blanco);border:5px solid var(--blanco);box-shadow:0 10px 24px rgba(61,46,32,.16)}
+.foto img{width:100%;height:100%;object-fit:cover}
+.galeria{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.galeria button{width:42px;height:42px;border-radius:50%;border:3px solid var(--blanco);padding:0;overflow:hidden;cursor:pointer;box-shadow:0 0 0 1px #cdbfae}
+.galeria img{width:100%;height:100%;object-fit:cover}
+.acc{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.sec{background:var(--blanco)}
+.chat{background:var(--rosa);border-radius:26px;padding:22px;max-width:740px;margin:0 auto}
+.cab{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.av{width:52px;height:52px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font:700 1.3rem var(--serif);color:var(--blanco);flex:none}
+.av img{width:100%;height:100%;object-fit:cover}
+#msgs{background:var(--blanco);border-radius:16px;height:310px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px}
+.m{max-width:84%;padding:9px 13px;border-radius:15px;white-space:pre-wrap}
+.m.yo{align-self:flex-end;background:var(--ambar);border-bottom-right-radius:4px}
+.m.el{align-self:flex-start;background:var(--crema);border-bottom-left-radius:4px}
+.envio{display:flex;gap:10px;margin-top:12px}
+details{margin-top:12px;font-size:.9rem;color:var(--suave)}
+summary{cursor:pointer;font-weight:700;color:var(--cafe)}
+details input{margin-top:8px}
+.estado{display:inline-block;font-size:.8rem;font-weight:700;border-radius:99px;padding:2px 10px;background:var(--blanco);color:var(--cafe)}
+.quiz{max-width:760px;margin:0 auto}
+.barra{height:8px;background:var(--crema);border-radius:99px;overflow:hidden;margin-bottom:20px}
+#prog{height:100%;width:0;background:var(--ambar);transition:width .4s}
+.quiz h3{font-size:1.45rem;margin-bottom:16px}
+.op{display:block;width:100%;text-align:left;background:var(--crema);border:2px solid transparent;border-radius:14px;padding:13px 17px;margin-bottom:9px;font:1rem var(--sans);color:var(--tinta);cursor:pointer}
+.op:hover{border-color:var(--ambar);background:var(--rosa)}
+.res ul{margin:10px 0 20px 20px;color:var(--suave)}
+.tag{display:inline-block;background:var(--rosa);color:var(--cafe);font-weight:700;border-radius:99px;padding:3px 13px;margin-bottom:10px}
+.modal{position:fixed;inset:0;background:rgba(61,46,32,.45);display:grid;place-items:center;z-index:50;padding:18px}
+.modal-box{background:var(--blanco);color:var(--tinta);border-radius:24px;padding:28px;max-width:380px;width:100%}
+.modal-box h3{margin-bottom:6px}
+footer{background:var(--cafe);color:var(--crema);text-align:center;padding:34px 22px}
+footer .logo{color:var(--crema)}
+@media(max-width:860px){.hero .wrap,.quienes .wrap,.grid2,.cards,.fila{grid-template-columns:1fr}nav a:not(.btn){display:none}.collage{height:300px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[data-theme="dark"]{--crema:#241c15;--blanco:#2f251c;--tinta:#f4ece0;--suave:#cdbca6;--rosa:#4a3438;--cafe:#d1ad82;--hero:#33262a}
+
+[data-theme="dark"] .btn.claro,[data-theme="dark"] .m.yo{color:#3d2e20}
+[data-theme="dark"] .foto,[data-theme="dark"] .av{color:#fffdfa}
+[data-theme="dark"] #texto{background:var(--crema)}
+nav{gap:14px}
+.frase{font:italic 500 1.35rem var(--serif);color:var(--cafe);margin:22px 0 0;min-height:2.2em}
+.hero{position:relative;overflow:hidden}.hero .wrap{position:relative;z-index:1}
+.hoja{position:absolute;top:-30px;opacity:.55;border-radius:0 100% 0 100%;pointer-events:none;animation:cae linear infinite}
+@keyframes cae{to{transform:translateY(560px) rotate(300deg)}}
+.buscar{margin-bottom:8px;font-size:.9rem;padding:8px 12px}
+.gp{margin-bottom:24px}.gi{display:flex;gap:12px;flex-wrap:wrap}
+.gi button{width:120px;height:150px;border:4px solid var(--blanco);border-radius:60px 60px 14px 14px;overflow:hidden;padding:0;cursor:pointer;box-shadow:0 8px 20px rgba(61,46,32,.16)}
+.gi img{width:100%;height:100%;object-fit:cover}
+[hidden]{display:none!important}
+html{scroll-padding-top:130px}
+.estudio-cab{padding:64px 0 10px;border-top:1px solid rgba(156,122,84,.2)}
+.estudio-cab .sub{margin-bottom:0}
+.tabbar{position:sticky;top:64px;z-index:15;background:var(--crema);border-bottom:1px solid rgba(156,122,84,.25)}
+.tabbar .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:12px;padding-bottom:12px}
+.tabbar a{white-space:nowrap;text-decoration:none;font-weight:700;font-size:.92rem;color:var(--cafe);border:2px solid var(--cafe);border-radius:999px;padding:7px 16px}
+.tabbar a:hover{background:var(--rosa)}
+.tabbar a[aria-current="true"]{background:var(--cafe);color:var(--blanco)}
+.vista{padding:30px 0 72px}
+.vista .titulo{font-size:1.7rem}
+a,a:hover,a:focus,a:visited{text-decoration:none}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="logo" href="#inicio">ATELIER</a>
+  <nav>
+    <a href="#quienes">Quiénes somos</a><a href="#hacer">Qué puedes hacer</a><a href="#escribir">Mi estudio</a>
+    <button class="btn mini" id="tema" aria-label="Cambiar entre modo claro y oscuro">Modo oscuro</button><button class="btn claro mini" id="btnEntrar">Entrar</button>
+  </nav>
+</div></header>
+
+<main id="inicio">
+<div class="hero"><div class="wrap">
+  <div>
+    <h1>Donde tus historias toman forma</h1>
+    <p>Escribe tus libros por capítulos, da vida a tus personajes y conversa con ellos para descubrir quiénes son de verdad.</p>
+    <a href="#escribir" class="btn">Empezar a escribir</a>
+    <p class="frase" id="frase"></p>
+  </div>
+  <div class="collage" aria-hidden="true"><img id="h1" alt=""><img id="h2" alt=""><img id="h3" alt=""><div class="globo">Cuéntame qué sigue, autor.</div></div>
+</div></div>
+
+<section id="quienes" class="quienes"><div class="wrap">
+  <div><h2 class="titulo">Quiénes somos</h2>
+  <p>ATELIER es un espacio para escribir historias y desarrollar a tus personajes literarios. Nació de una idea simple: un personaje no se conoce solo describiéndolo, también se le puede preguntar.</p>
+  <p style="margin-top:12px">Pensamos en quien da sus primeros pasos y en quien ya lleva años escribiendo, en géneros de todo tipo y en cualquier tono.</p></div>
+  <blockquote>Un taller para quienes escriben y para quienes aún no saben que lo harán.</blockquote>
+</div></section>
+
+<section id="hacer"><div class="wrap">
+  <h2 class="titulo">Qué puedes hacer en ATELIER</h2>
+  <p class="sub">Todo lo que necesitas para llevar una historia de la idea al borrador.</p>
+  <div class="cards">
+    <div class="card"><h3>Escribir por capítulos</h3><p>Organiza tu libro, escribe con el contador de palabras y se guarda solo.</p></div>
+    <div class="card"><h3>Crear personajes</h3><p>Personalidad, deseo, miedo, secreto y forma de hablar en una sola ficha.</p></div>
+    <div class="card"><h3>Darles un rostro</h3><p>Sube una imagen, elige un retrato de la galería o genera uno con IA.</p></div>
+    <div class="card"><h3>Conversar con ellos</h3><p>Pregúntales lo que quieras. Con IA conectada, responden con coherencia y conocen tu capítulo.</p></div>
+    <div class="card"><h3>Encontrar tu rumbo</h3><p>Un quiz que te sugiere conflicto, primera escena y final, y lo guarda como notas.</p></div>
+    <div class="card"><h3>Tu perfil</h3><p>Entra con tu nombre y tu trabajo queda guardado en este navegador.</p></div>
+  </div>
+</div></section>
+
+<div class="estudio-cab"><div class="wrap"><h2 class="titulo">Tu estudio</h2><p class="sub">Escribe, crea personajes, conversa con ellos y guarda tus ideas, todo en un mismo lugar.</p></div></div>
+<div class="tabbar"><div class="wrap" id="tabs"><a href="#escribir">Escribir</a><a href="#personajes">Personajes</a><a href="#hablar">Chat</a><a href="#galeria">Galería</a><a href="#quiz">Taller de ideas</a><a href="#resenas">Reseñas</a></div></div>
+<section id="escribir" class="vista"><div class="wrap">
+  <h2 class="titulo">Tu libro</h2>
+  <p class="sub">Elige un capítulo y escribe. Los cambios se guardan automáticamente.</p>
+  <div class="grid2 panel">
+    <div><input class="buscar" data-l="caps" placeholder="Buscar capítulo…" aria-label="Buscar capítulo"><div class="lista" id="caps"></div><button class="btn mini" id="addCap" style="margin-top:10px">+ Nuevo capítulo</button></div>
+    <div>
+      <div class="campo"><label for="capT">Título del capítulo</label><input id="capT" maxlength="60"></div>
+      <textarea id="texto" placeholder="Había una vez…" aria-label="Texto del capítulo"></textarea>
+      <div class="meta"><span id="pal">0 palabras</span><span id="guard">Guardado</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="personajes" class="vista"><div class="wrap">
+  <h2 class="titulo">Tus personajes</h2>
+  <p class="sub">Crea todos los que necesites. Elige uno y conversa con él más abajo.</p>
+  <div class="grid2 panel">
+    <div><input class="buscar" data-l="pers" placeholder="Buscar personaje…" aria-label="Buscar personaje"><div class="lista" id="pers"></div><button class="btn mini" id="addPer" style="margin-top:10px">+ Nuevo personaje</button></div>
+    <div class="fila" style="align-items:start">
+      <div>
+        <div class="campo"><label for="pn">Nombre</label><input id="pn" maxlength="24"></div>
+        <div class="campo"><label for="pe">Edad</label><input id="pe" maxlength="12"></div>
+        <div class="campo"><label for="pf">Apariencia física (cabello, ojos, piel, ropa, rasgos)</label><textarea id="pf" maxlength="240"></textarea></div>
+        <div class="campo"><label for="pq">Mundo emocional (cómo siente, heridas, cualidades)</label><textarea id="pq" maxlength="240"></textarea></div>
+        <div class="campo"><label for="pr">Papel</label><select id="pr"><option>Protagonista</option><option>Mentor</option><option>Rival</option><option>Amigo leal</option><option>Misterio</option></select></div>
+        <div class="campo"><label for="ph">Forma de hablar</label><select id="ph"><option value="dulce">Dulce y cercana</option><option value="sarcastico">Sarcástica e ingeniosa</option><option value="solemne">Solemne y pausada</option></select></div>
+        <div class="campo"><label for="pp">Personalidad</label><input id="pp" maxlength="90"></div>
+        <div class="campo"><label for="pd">Desea</label><input id="pd" maxlength="80"></div>
+        <div class="campo"><label for="pm">Teme</label><input id="pm" maxlength="80"></div>
+        <div class="campo"><label for="ps">Secreto o pasado</label><textarea id="ps" maxlength="200"></textarea></div>
+      </div>
+      <div style="text-align:center">
+        <div class="foto" id="foto"></div>
+        <div class="galeria" id="gal" aria-label="Galería de retratos"></div>
+        <div class="acc">
+          <label class="btn mini claro" style="margin:0;cursor:pointer">Subir imagen<input type="file" id="arch" accept="image/*" hidden></label>
+          <button class="btn mini" id="genIA">Generar con IA</button><button class="btn mini claro" id="genIA2">Otra versión</button>
+        </div>
+        <p class="meta" id="imgMsg" style="justify-content:center"></p>
+        <a href="#hablar" class="btn" style="margin-top:12px">Hablar con este personaje</a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="hablar" class="vista"><div class="wrap">
+  <h2 class="titulo">Habla con tu personaje</h2>
+  <p class="sub">Inicia sesión para que responda con IA según su ficha y el capítulo que estás escribiendo.</p>
+  <div class="chat">
+    <div class="cab"><div class="av" id="cav"></div><div><b id="cn"></b><br><span class="estado" id="estado">Modo básico</span></div><button class="btn mini claro" id="limpiar" style="margin-left:auto">Reiniciar</button></div>
+    <select id="modo" aria-label="Modo de conversación" style="margin-bottom:10px"><option value="libre">Conversación libre</option><option value="historia">Modo historia (escena)</option><option value="entrevista">Modo entrevista</option><option value="improvisacion">Modo improvisación</option></select>
+    <div id="msgs" aria-live="polite"></div>
+    <form class="envio" id="form"><input id="q" placeholder="Escribe tu pregunta…" aria-label="Tu pregunta" autocomplete="off"><button class="btn" type="submit">Enviar</button></form>
+    
+  </div>
+</div></section>
+
+<section id="galeria" class="vista"><div class="wrap">
+  <h2 class="titulo">Galería</h2>
+  <p class="sub">Todas las versiones de tus personajes, separadas por personaje. Toca una imagen para usarla como retrato actual.</p>
+  <div id="galGrid"></div>
+</div></section>
+
+<section id="resenas" class="vista"><div class="wrap">
+  <h2 class="titulo">Reseñas</h2>
+  <p class="sub">Escribe tu opinión sobre un libro. Por ahora se guardan solo en tu perfil; compartirlas con otras personas llegará con las cuentas en línea.</p>
+  <div class="grid2 panel" style="grid-template-columns:1fr 1fr">
+    <form id="fRes">
+      <div class="campo"><label for="rt">Libro</label><input id="rt" maxlength="80" required></div>
+      <div class="campo"><label for="re">Puntuación</label><select id="re"><option value="5">★★★★★</option><option value="4">★★★★☆</option><option value="3">★★★☆☆</option><option value="2">★★☆☆☆</option><option value="1">★☆☆☆☆</option></select></div>
+      <div class="campo"><label for="rx">Tu reseña</label><textarea id="rx" maxlength="600"></textarea></div>
+      <button class="btn">Guardar reseña</button>
+    </form>
+    <div id="listaRes"></div>
+  </div>
+</div></section>
+
+<section id="quiz" class="vista"><div class="wrap">
+  <h2 class="titulo">Taller de ideas: ¿hacia dónde va tu historia?</h2>
+  <p class="sub">Te hago recomendaciones y tú decides. Al final puedes guardar todo en tus notas.</p>
+  <div class="panel quiz"><div id="quizBox"></div></div>
+  <div class="panel quiz" style="margin-top:18px"><h3 style="margin-bottom:10px">Mis notas e ideas</h3><textarea id="notas" style="min-height:140px" placeholder="Aquí se guardan las recomendaciones del taller y lo que quieras anotar…" aria-label="Notas"></textarea></div>
+</div></section>
+</main>
+
+<footer><a class="logo" href="#inicio">ATELIER</a><p style="margin-top:6px;opacity:.85">Escribe. Imagina. Conversa con tus personajes.</p></footer>
+
+<div id="dlg" class="modal" hidden>
+  <form id="fLogin" class="modal-box">
+    <h3>Tu cuenta</h3>
+    <p style="color:var(--suave);margin-bottom:14px;font-size:.92rem">Entra o crea una cuenta con tu correo. Tus libros y personajes se guardan y los ves desde cualquier dispositivo.</p>
+    <div class="campo"><label for="uMail">Correo</label><input id="uMail" type="email" autocomplete="email"></div>
+    <div class="campo"><label for="uPass">Contraseña</label><input id="uPass" type="password" autocomplete="current-password"></div>
+    <div class="campo"><label for="uNom">Tu nombre (solo al crear la cuenta)</label><input id="uNom" maxlength="30" autocomplete="nickname"></div>
+    <p id="loginMsg" role="alert" style="color:var(--cafe);min-height:1.4em;font-size:.92rem;margin-bottom:8px"></p>
+    <div style="display:flex;gap:10px"><button class="btn" style="flex:1" type="submit">Entrar</button><button type="button" class="btn claro" id="crear" style="flex:1">Crear cuenta</button></div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px"><button type="button" id="olvide" style="border:0;background:none;color:var(--cafe);cursor:pointer;font:inherit;font-size:.9rem">Olvidé mi contraseña</button><button type="button" id="cerrarDlg" style="border:0;background:none;color:var(--suave);cursor:pointer;font:inherit;font-size:.9rem">Cancelar</button></div>
+  </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== CONFIGURA ESTO (no es la clave de Gemini; esa va solo en el servidor) ===== */
+const FIREBASE_CONFIG={apiKey:'AIzaSyDjn8goGXkiVH6dSKMeXmUK_EIJSEFtSEM',authDomain:'atelier-web11.firebaseapp.com',projectId:'atelier-web11',appId:'1:476172706190:web:4a1c998a4d775cb8a4c4df'};
+const AI_ENDPOINT='/.netlify/functions/chat';
+/* ================================================================================== */
+const $=s=>document.querySelector(s), esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ---- Retratos de galería (SVG) ---- */
+const sk=['#f1c9a5','#d9a074','#8d5a3b','#f5d6c0','#c68a5e','#e8b894'],hr=['#3d2e20','#b5703f','#1f1a17','#d9a05b','#7a4a2b','#9c7a54'],bg=['#F4DCDF','#D9A05B','#9C7A54','#F4F1EC','#e3b5bb','#c9b08a'];
+function retrato(i){const s=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120'><rect width='100' height='120' fill='${bg[i]}'/><path d='M18 120c0-26 14-38 32-38s32 12 32 38z' fill='${hr[(i+2)%6]}'/><circle cx='50' cy='50' r='24' fill='${sk[i]}'/><path d='M24 52c-4-30 14-38 28-38 16 0 28 10 24 38-4-14-12-20-26-20s-22 6-26 20z' fill='${hr[i]}'/><circle cx='42' cy='52' r='2.4' fill='#3d2e20'/><circle cx='58' cy='52' r='2.4' fill='#3d2e20'/><path d='M43 62q7 6 14 0' stroke='#3d2e20' fill='none' stroke-width='2' stroke-linecap='round'/></svg>`;return 'data:image/svg+xml;utf8,'+encodeURIComponent(s)}
+['h1','h2','h3'].forEach((id,i)=>$('#'+id).src=retrato([0,3,5][i]));
+
+/* ---- Estado y guardado ---- */
+const nuevoP=()=>({n:'Mara',rol:'Protagonista',hab:'dulce',per:'Curiosa, terca y leal',des:'encontrar a su hermano desaparecido',mie:'que nadie la recuerde',pas:'Guardó una carta que nunca se atrevió a abrir.',img:'',col:'#D9A05B',edad:'24',fis:'Cabello castaño ondulado, ojos color miel, piel clara, estatura media, abrigo verde oliva',emo:'Sensible y obstinada; esconde el miedo tras el humor',gal:[],mem:[],seed:Math.floor(Math.random()*99999)});
+let user='', S={caps:[{t:'Capítulo 1',x:''}],pers:[nuevoP()],c:0,p:0};
+const key=()=>'atelier_'+(user||'invitado');
+function cargar(){S={caps:[{t:'Capítulo 1',x:''}],pers:[nuevoP()],c:0,p:0};try{const d=JSON.parse(localStorage.getItem(key()));if(d)S=d}catch(e){}}
+let tG;function guardar(){$('#guard').textContent='Guardando…';clearTimeout(tG);tG=setTimeout(()=>{try{localStorage.setItem(key(),JSON.stringify(S));$('#guard').textContent='Guardado';if(db&&user)db.collection('usuarios').doc(user).set({datos:JSON.stringify(S,(k,v)=>typeof v==='string'&&v.startsWith('data:')&&v.length>20000?'':v)}).catch(()=>{})}catch(e){$('#guard').textContent='No se pudo guardar'}},400)}
+
+/* ---- Capítulos ---- */
+function pintarCaps(){
+  $('#caps').innerHTML=S.caps.map((c,i)=>`<div class="item"><button class="sel" data-i="${i}" aria-current="${i===S.c}">${esc(c.t||'Sin título')}</button>${S.caps.length>1?`<button class="x" data-d="${i}" aria-label="Borrar capítulo">×</button>`:''}</div>`).join('');
+  const c=S.caps[S.c];$('#capT').value=c.t;$('#texto').value=c.x;contar();
+}
+const contar=()=>{const n=($('#texto').value.trim().match(/\S+/g)||[]).length;$('#pal').textContent=n+(n===1?' palabra':' palabras')};
+$('#caps').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.i!==undefined)S.c=+b.dataset.i;
+  if(b.dataset.d!==undefined&&confirm('¿Borrar este capítulo?')){S.caps.splice(+b.dataset.d,1);S.c=0}
+  pintarCaps();guardar();
+});
+$('#addCap').onclick=()=>{S.caps.push({t:'Capítulo '+(S.caps.length+1),x:''});S.c=S.caps.length-1;pintarCaps();guardar()};
+$('#capT').oninput=e=>{S.caps[S.c].t=e.target.value;const b=$('#caps button.sel[aria-current="true"]');if(b)b.textContent=e.target.value||'Sin título';guardar()};
+$('#texto').oninput=e=>{S.caps[S.c].x=e.target.value;contar();guardar()};
+
+/* ---- Personajes ---- */
+const campos={pn:'n',pe:'edad',pf:'fis',pq:'emo',pr:'rol',ph:'hab',pp:'per',pd:'des',pm:'mie',ps:'pas'};
+const P=()=>S.pers[S.p];
+function avatar(el,p){el.style.background=p.col;el.innerHTML=p.img?`<img src="${p.img}" alt="">`:esc((p.n.trim()[0]||'?').toUpperCase())}
+function pintarPers(){
+  $('#pers').innerHTML=S.pers.map((p,i)=>`<div class="item"><button class="sel" data-i="${i}" aria-current="${i===S.p}">${esc(p.n||'Sin nombre')}</button>${S.pers.length>1?`<button class="x" data-d="${i}" aria-label="Borrar personaje">×</button>`:''}</div>`).join('');
+  for(const id in campos)$('#'+id).value=P()[campos[id]]??'';
+  avatar($('#foto'),P());avatar($('#cav'),P());$('#cn').textContent=P().n||'Personaje';
+}
+$('#pers').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.i!==undefined){S.p=+b.dataset.i;reiniciarChat()}
+  if(b.dataset.d!==undefined&&confirm('¿Borrar este personaje?')){S.pers.splice(+b.dataset.d,1);S.p=0;reiniciarChat()}
+  pintarPers();guardar();
+});
+$('#addPer').onclick=()=>{S.pers.push({...nuevoP(),n:'Nuevo personaje',per:'',des:'',mie:'',pas:''});S.p=S.pers.length-1;pintarPers();reiniciarChat();guardar()};
+for(const id in campos)$('#'+id).oninput=e=>{P()[campos[id]]=e.target.value;avatar($('#foto'),P());avatar($('#cav'),P());$('#cn').textContent=P().n||'Personaje';const b=$('#pers button.sel[aria-current="true"]');if(b&&id==='pn')b.textContent=e.target.value||'Sin nombre';guardar()};
+$('#gal').innerHTML=[0,1,2,3,4,5].map(i=>`<button data-r="${i}" aria-label="Retrato ${i+1}"><img src="${retrato(i)}" alt=""></button>`).join('');
+$('#gal').onclick=e=>{const b=e.target.closest('button');if(!b)return;P().img=retrato(+b.dataset.r);avatar($('#foto'),P());avatar($('#cav'),P());guardar()};
+$('#arch').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{P().img=r.result;avatar($('#foto'),P());avatar($('#cav'),P());guardar()};r.readAsDataURL(f)};
+function gen(nueva){
+  const p=P(),m=$('#imgMsg');
+  if(nueva||!p.seed)p.seed=Math.floor(Math.random()*99999);
+  m.textContent='Generando retrato… puede tardar unos segundos.';
+  const prompt=`portrait illustration of a fictional character: ${p.n}, ${p.edad||''} years old, ${p.rol}. Appearance: ${p.fis||p.per}. Mood: ${p.emo||p.per}. Warm autumn palette, painterly, soft light, consistent character design`;
+  const im=new Image();
+  im.onload=()=>{p.img=im.src;p.gal=p.gal||[];if(!p.gal.includes(im.src))p.gal.push(im.src);avatar($('#foto'),p);avatar($('#cav'),p);m.textContent='Listo. Se guardó en la Galería.';pintarGal();guardar()};
+  im.onerror=()=>{m.textContent='No se pudo generar ahora. Prueba de nuevo o elige un retrato de la galería.'};
+  im.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=512&height=640&nologo=true&seed='+p.seed;
+}
+$('#genIA').onclick=()=>gen(false);$('#genIA2').onclick=()=>gen(true);
+
+/* ---- Chat ---- */
+let hist=[];
+const msgs=$('#msgs');
+function add(t,c){const d=document.createElement('div');d.className='m '+c;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function reiniciarChat(){hist=P().mem||[];msgs.innerHTML='';hist.slice(-8).forEach(m=>add(m.content,m.role==='user'?'yo':'el'));if(!hist.length)add(`Hola. Soy ${P().n||'tu personaje'}. Pregúntame lo que quieras.`,'el')}
+$('#limpiar').onclick=()=>{P().mem=[];reiniciarChat();guardar()};
+const T={dulce:{q:'Soy {n}. Me alegra que me preguntes.',d:'Lo que más quiero es {d}.',m:'Me da miedo {m}. Contigo me cuesta menos decirlo.',p:'Solo a ti: {p}',o:'Déjame pensarlo… todo vuelve a {d}.'},
+sarcastico:{q:'{n}, {r} oficial. Sí, a mí también me sorprende la pregunta.',d:'Lo típico: {d}. Nada ambicioso.',m:'¿Miedo yo? Bueno… {m}. Si lo repites, lo niego.',p:'Qué directo. Está bien: {p}',o:'Mi respuesta honesta es un encogimiento de hombros dramático.'},
+solemne:{q:'Me llamo {n}, y en este relato soy {r}.',d:'Mi anhelo es {d}. Todo lo que hago apunta hacia allí.',m:'Temo {m}. Es una sombra que me acompaña.',p:'Guardo una verdad: {p}',o:'Permíteme un silencio. Algunas respuestas llegan despacio.'}};
+function local(q){
+  const p=P(),t=T[p.hab],s=q.toLowerCase();
+  const k=/qui[eé]n|nombre|eres/.test(s)?'q':/quier|desea|sue[ñn]/.test(s)?'d':/miedo|teme|asusta/.test(s)?'m':/secreto|pasado|escond/.test(s)?'p':'o';
+  return t[k].replace('{n}',p.n).replace('{r}',p.rol.toLowerCase()).replace('{d}',p.des||'algo que aún no sé nombrar').replace('{m}',p.mie||'algo que prefiero callar').replace('{p}',p.pas||'cosas que callo');
+}
+const MODOS={libre:'Conversa libremente sobre cualquier tema.',historia:'Estamos interpretando una escena de la novela: responde dentro de la escena, con acciones breves entre asteriscos.',entrevista:'Es una entrevista: responde con detalle sobre tu vida, tu pasado y tu forma de ser.',improvisacion:'Improvisa: introduce una situación inesperada pero coherente con tu personalidad y con lo establecido en tu ficha.'};
+async function ia(q){
+  const p=P(),c=S.caps[S.c];
+  const sys=`Eres ${p.n}, un personaje de una novela. Papel: ${p.rol}. Personalidad: ${p.per}. Forma de hablar: ${p.hab}. Deseo: ${p.des}. Miedo: ${p.mie}. Secreto: ${p.pas}. Edad: ${p.edad}. Aspecto: ${p.fis}. Mundo emocional: ${p.emo}.
+Responde siempre en primera persona, en español, con coherencia estricta con tu ficha y en 1 a 4 frases. ${MODOS[$('#modo').value]} No digas que eres una IA ni rompas el personaje. No inventes hechos que contradigan tu ficha.
+${c.x.trim()?'Fragmento del capítulo actual, por si ayuda:\n'+c.x.slice(-1500):''}`;
+  const tk=await auth.currentUser.getIdToken();
+  const r=await fetch(AI_ENDPOINT,{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+tk},body:JSON.stringify({system:sys,messages:[...hist.slice(-28),{role:'user',content:q}]})});
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||e.detalle||'Error '+r.status)}
+  const d=await r.json();return d.text;
+}
+$('#form').onsubmit=async e=>{
+  e.preventDefault();const q=$('#q').value.trim();if(!q)return;$('#q').value='';add(q,'yo');
+  const w=add('…','el');
+  if(auth&&auth.currentUser){
+    try{const a=await ia(q);w.textContent=a;hist.push({role:'user',content:q},{role:'assistant',content:a});hist=hist.slice(-30);P().mem=hist;guardar();return}
+    catch(err){w.textContent='No pude conectar con la IA (error: '+err.message+'). Respondo en modo básico:\n'+local(q);return}
+  }
+  setTimeout(()=>w.textContent=local(q)+'\n\n(Inicia sesión para hablar con la IA.)',500);
+};
+
+/* ---- Taller de ideas (quiz) ---- */
+const Q=[["¿Qué género te atrae hoy?","romance","fantasía","misterio","aventura","ciencia ficción","drama","terror","vida cotidiana"],
+["¿Dónde y cuándo ocurre?","la actualidad en una ciudad grande","un pueblo pequeño","una época antigua o medieval","un futuro lejano","un mundo inventado"],
+["¿Qué relación une a tus protagonistas?","amor","amistad","rivalidad","familia","mentor y aprendiz"],
+["¿Qué los pone a prueba?","un secreto del pasado","un malentendido","una rivalidad","la presión de sus familias o de la sociedad","algo que aún no descubren"],
+["¿Qué tono quieres?","divertido","triste","oscuro","romántico","esperanzador"],
+["¿Cómo debería terminar?","feliz","agridulce","trágico","abierto","con un giro inesperado"],
+["¿Cuánta fantasía tiene el mundo?","realista","con un toque de magia","de fantasía total"]];
+let qi=0,ans=[];const qb=$('#quizBox');
+function mostrarQ(){
+  if(qi===Q.length)return abierta();
+  const q=Q[qi];
+  qb.innerHTML=`<div class="barra"><div id="prog"></div></div><h3>${q[0]}</h3>`+q.slice(1).map(o=>`<button class="op">${o}</button>`).join('');
+  requestAnimationFrame(()=>$('#prog').style.width=((qi+1)/(Q.length+1)*100)+'%');
+  qb.querySelectorAll('.op').forEach(b=>b.onclick=()=>{ans[qi]=b.textContent;qi++;mostrarQ()});
+}
+function abierta(){
+  qb.innerHTML=`<div class="barra"><div id="prog" style="width:100%"></div></div><h3>Con tus palabras: ¿qué imagen o sensación inspira tu historia?</h3><textarea id="insp" spellcheck="false" placeholder="Opcional…"></textarea><button class="btn" id="ver" style="margin-top:14px">Ver mi ficha</button>`;
+  $('#ver').onclick=()=>{ans[Q.length]=$('#insp').value.trim();fin()};
+}
+function fin(){
+  const a=ans;
+  const concepto=`Una historia de ${a[0]} ambientada en ${a[1]}. Los protagonistas están unidos por ${a[2]} y los pone a prueba ${a[3]}. Tono ${a[4]}, final ${a[5]}, en un mundo ${a[6]}.`;
+  const esq=['Presentación: el mundo y los protagonistas','Aparece el conflicto: '+a[3],'La relación ('+a[2]+') se pone a prueba','Punto de quiebre','Desenlace ('+a[5]+')'];
+  const nota='CONCEPTO: '+concepto+(a[7]?'\nINSPIRACIÓN: '+a[7]:'')+'\nESQUEMA:\n'+esq.map((x,i)=>(i+1)+'. '+x).join('\n');
+  qb.innerHTML=`<div class="res"><span class="tag">Tu ficha</span><h3>Una historia de ${esc(a[0])}</h3><p>${esc(concepto)}</p><ul>${esq.map((x,i)=>`<li><b>Cap. ${i+1}:</b> ${esc(x)}</li>`).join('')}</ul>
+  <p style="color:var(--suave);font-size:.9rem">Son recomendaciones: tú decides qué conservar.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" id="gn">Guardar en mis notas</button><button class="btn" id="gc">Crear los capítulos</button><button class="btn claro" id="rq">Repetir</button></div></div>`;
+  $('#gn').onclick=()=>{S.notas=(S.notas?S.notas+'\n\n':'')+nota;$('#notas').value=S.notas;guardar();$('#gn').textContent='Guardado'};
+  $('#gc').onclick=()=>{esq.forEach((x,i)=>S.caps.push({t:'Cap. '+(i+1)+': '+x,x:''}));S.c=S.caps.length-esq.length;pintarCaps();guardar();mostrarV('escribir',true)};
+  $('#rq').onclick=()=>{qi=0;ans=[];mostrarQ()};
+}
+$('#notas').oninput=e=>{S.notas=e.target.value;guardar()};
+
+/* ---- Galería ---- */
+const imgs=p=>[...new Set([...(p.gal||[]),...(p.img?[p.img]:[])])];
+function pintarGal(){
+  const h=S.pers.map((p,i)=>{const im=imgs(p);return im.length?`<div class="gp"><h3 style="margin-bottom:10px">${esc(p.n)}</h3><div class="gi">${im.map((u,j)=>`<button data-p="${i}" data-j="${j}" aria-label="Usar esta imagen"><img src="${u}" alt=""></button>`).join('')}</div></div>`:''}).join('');
+  $('#galGrid').innerHTML=h||'<p style="color:var(--suave)">Aún no hay imágenes. Genera un retrato con IA en la ficha de un personaje y quedará guardado aquí.</p>';
+}
+$('#galGrid').onclick=e=>{const b=e.target.closest('button');if(!b)return;const p=S.pers[+b.dataset.p];p.img=imgs(p)[+b.dataset.j];pintarPers();guardar()};
+
+/* ---- Reseñas ---- */
+function pintarRes(){
+  $('#listaRes').innerHTML=(S.res||[]).map((r,i)=>`<div class="card" style="margin-bottom:12px"><b>${esc(r.t)}</b> <span style="color:var(--ambar)">${'★'.repeat(r.e)}${'☆'.repeat(5-r.e)}</span><p style="margin-top:6px">${esc(r.x)}</p><button data-r="${i}" style="border:0;background:none;cursor:pointer;color:var(--suave);margin-top:6px">Borrar</button></div>`).join('')||'<p style="color:var(--suave)">Todavía no hay reseñas.</p>';
+}
+$('#fRes').onsubmit=e=>{e.preventDefault();(S.res=S.res||[]).unshift({t:$('#rt').value.trim(),e:+$('#re').value,x:$('#rx').value.trim()});e.target.reset();pintarRes();guardar()};
+$('#listaRes').onclick=e=>{const b=e.target.closest('[data-r]');if(b){S.res.splice(+b.dataset.r,1);pintarRes();guardar()}};
+
+/* ---- Búsqueda, tema, frases y hojas ---- */
+document.querySelectorAll('.buscar').forEach(b=>b.oninput=()=>{const q=b.value.toLowerCase();document.querySelectorAll('#'+b.dataset.l+' .item').forEach(it=>it.style.display=it.textContent.toLowerCase().includes(q)?'':'none')});
+const tm=$('#tema');
+function aplicarTema(d){document.documentElement.dataset.theme=d?'dark':'light';tm.textContent=d?'Modo claro':'Modo oscuro';try{localStorage.setItem('atelier_tema',d?'d':'l')}catch(e){}}
+let td=false;try{td=localStorage.getItem('atelier_tema')==='d'}catch(e){}
+aplicarTema(td);tm.onclick=()=>aplicarTema(document.documentElement.dataset.theme!=='dark');
+const FR=['Cada historia comienza con una idea que se niega a quedarse en silencio.','Los personajes no se inventan: se escuchan.','Escribir es abrir una puerta y dejar que alguien entre.','Tu historia ya existe; solo falta contarla.'];
+let fx=0;$('#frase').textContent=FR[0];setInterval(()=>{fx=(fx+1)%FR.length;$('#frase').textContent=FR[fx]},6000);
+for(let i=0;i<9;i++){const l=document.createElement('span');l.className='hoja';l.style.cssText=`left:${i*11+Math.random()*6}%;animation-delay:${-Math.random()*12}s;animation-duration:${10+Math.random()*8}s;width:${12+Math.random()*12}px;height:${12+Math.random()*12}px;background:${['#D9A05B','#9C7A54','#c98f98'][i%3]}`;document.querySelector('.hero').appendChild(l)}
+
+/* ---- Perfil ---- */
+const dlg=$('#dlg'),cerrar=()=>{dlg.hidden=true};
+let auth=null,db=null,nombre='';
+try{firebase.initializeApp(FIREBASE_CONFIG);auth=firebase.auth();db=firebase.firestore()}catch(e){console.warn('Firebase sin configurar',e)}
+function sesion(){$('#btnEntrar').textContent=user?nombre+' · Salir':'Entrar';$('#estado').textContent=user?'IA activada':'Modo básico (inicia sesión para la IA)'}
+const ERR={'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/invalid-email':'El correo no es válido.','auth/email-already-in-use':'Ese correo ya tiene una cuenta.','auth/weak-password':'La contraseña debe tener al menos 6 caracteres.','auth/missing-password':'Escribe tu contraseña.','auth/too-many-requests':'Demasiados intentos. Espera un momento.','auth/network-request-failed':'Sin conexión. Revisa tu internet.'};
+const msg=t=>{$('#loginMsg').textContent=t};
+async function acceso(crear){
+  if(!auth)return msg('Falta configurar Firebase en el código.');
+  const m=$('#uMail').value.trim(),p=$('#uPass').value;
+  try{
+    if(crear){const c=await auth.createUserWithEmailAndPassword(m,p);const n=$('#uNom').value.trim();if(n)await c.user.updateProfile({displayName:n})}
+    else await auth.signInWithEmailAndPassword(m,p);
+    msg('');$('#uPass').value='';cerrar();
+  }catch(e){msg(ERR[e.code]||'No se pudo completar. Intenta de nuevo.')}
+}
+$('#fLogin').onsubmit=e=>{e.preventDefault();acceso(false)};
+$('#crear').onclick=()=>acceso(true);
+$('#olvide').onclick=async()=>{
+  const m=$('#uMail').value.trim();if(!auth)return msg('Falta configurar Firebase.');if(!m)return msg('Escribe tu correo arriba y vuelve a tocar.');
+  try{await auth.sendPasswordResetEmail(m);msg('Te enviamos un correo para restablecerla.')}catch(e){msg(ERR[e.code]||'No se pudo enviar el correo.')}
+};
+$('#btnEntrar').onclick=()=>{if(user){auth&&auth.signOut()}else{dlg.hidden=false;msg('');$('#uMail').focus()}};
+$('#cerrarDlg').onclick=cerrar;
+dlg.addEventListener('click',e=>{if(e.target===dlg)cerrar()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrar()});
+async function nube(uid){
+  if(!db)return;
+  try{const d=await db.collection('usuarios').doc(uid).get();if(d.exists&&user===uid){S=JSON.parse(d.data().datos);todo()}}catch(e){console.warn(e)}
+}
+if(auth)auth.onAuthStateChanged(async u=>{user=u?u.uid:'';nombre=u?(u.displayName||u.email.split('@')[0]):'';cargar();todo();sesion();if(u)await nube(u.uid)});
+function todo(){pintarCaps();pintarPers();reiniciarChat();pintarGal();pintarRes();$('#notas').value=S.notas||''}
+const VISTAS=['escribir','personajes','hablar','galeria','quiz','resenas'];
+function mostrarV(id,ir){VISTAS.forEach(v=>$('#'+v).hidden=v!==id);document.querySelectorAll('#tabs a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+id));if(ir)document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');if(!a)return;
+  const id=a.getAttribute('href').slice(1);if(!id)return;
+  e.preventDefault();
+  if(VISTAS.includes(id))mostrarV(id,true);
+  else{const t=document.getElementById(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}
+});
+mostrarV('escribir',false);
+document.querySelectorAll('input,textarea').forEach(e=>e.spellcheck=false);
+cargar();todo();mostrarQ();
+</script>
+</body>
+</html>
+<script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="3d6bc7ac-ffc3-43ac-b18e-61719753c60f" data-app-host="app.netlify.com" data-account-tier="free"></script>
